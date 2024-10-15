@@ -143,7 +143,7 @@ body{
 
 .d-1-image.small {
     width: 80%;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .d-2 {
@@ -156,4 +156,13 @@ body{
 .aviso--grande {
     font-size: 40px;
     font-weight: bold;
+}
+
+.aviso--gigante {
+    font-size: 70px;
+    font-weight: bold;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

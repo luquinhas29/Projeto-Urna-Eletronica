@@ -7,14 +7,21 @@ let numeros = document.querySelector('.d-1-3');
 
 let etapaAtual = 0;
 let numero = '';
+let votoBranco = false;
 
 function comecarEtapa(){
     let etapa = etapas[etapaAtual];
     
     let numeroHtml = '';
+    numero = '';
+    votoBranco = false;
 
     for(let i=0;i<etapa.numeros;i++){
-        numeroHtml += '<div class="numero"></div>';
+        if(i === 0){
+            numeroHtml += '<div class="numero pisca"></div>';
+        } else {
+            numeroHtml += '<div class="numero"></div>';
+        }
     }
 
     seuVotoPara.style.display = 'none';
@@ -27,7 +34,29 @@ function comecarEtapa(){
 }
 
 function atualizaInterface(){
-
+    let etapa = etapas[etapaAtual];
+    let candidato = etapa.candidatos.filter((item) => {
+        if(item.numero === numero){
+            return true;
+        } else {
+            return false;
+        }
+    });
+    if(candidato.length > 0){
+        candidato = candidato[0];
+        seuVotoPara.style.display = 'block';
+        aviso.style.display = 'block';
+        descricao.innerHTML = `Nome: ${candidato.nome}<br/>Partido: ${candidato.partido}`;
+        let fotosHtml = '';
+        for(let i in candidato.fotos){
+            fotosHtml += `<div class="d-1-image"><img src="images/${candidato.fotos[i].url}" alt="" />${candidato.fotos[i].legenda}"</div>`;
+        }
+        lateral.innerHTML = fotosHtml;
+    } else {
+        seuVotoPara.style.display = 'block';
+        aviso.style.display = 'block';
+        descricao.innerHTML = '<div class="aviso--grande pisca">VOTO NULO</div>';
+    }
 }
 
 function clicou(n){
@@ -36,7 +65,7 @@ function clicou(n){
         elNumero.innerHTML = n;
         numero = `${numero}${n}`;
 
-        elNumero.classList.remove('.pisca');
+        elNumero.classList.remove('pisca');
         if(elNumero.nextElementSibling !== null){
             elNumero.nextElementSibling.classList.add('pisca');
         } else {
@@ -46,11 +75,18 @@ function clicou(n){
 }
 
 function branco(){
-    alert('clicou em branco');
-}
+        numero = '';
+        votoBranco = true;
+        
+        seuVotoPara.style.display = 'block';
+        aviso.style.display = 'block';
+        numeros.innerHTML = '';
+        descricao.innerHTML = `<div class="aviso--grande pisca">VOTO EM BRANCO</div>`;
+
+    }
 
 function corrige(){
-    alert('clicou em corrige');
+    comecarEtapa();
 }
 
 function confirma(){
